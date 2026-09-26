@@ -1,35 +1,25 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class GridCardsWidget<T> extends StatefulWidget {
-  final String jsonPath;
-  final String imagePath;
-
-  final T Function(Map<String, dynamic> json) fromJson;
+  final List<T> items;
 
   final int Function(T item) getId;
-
   final String Function(T item) getTitle;
-
   final String Function(T item) getImage;
 
-  final Function(T item) onItemTap;
+  final void Function(T item)? onItemTap;
 
-  final Function(List<T>) onItemsSelected;
+  final void Function(List<T> selectedItems)? onItemsSelected;
 
   const GridCardsWidget({
     super.key,
-    required this.jsonPath,
-    required this.imagePath,
-    required this.fromJson,
+    required this.items,
     required this.getId,
     required this.getTitle,
     required this.getImage,
-    required this.onItemTap,
-    required this.onItemsSelected,
+    this.onItemTap,
+    this.onItemsSelected,
   });
 
   @override
@@ -37,178 +27,199 @@ class GridCardsWidget<T> extends StatefulWidget {
 }
 
 class _GridCardsWidgetState<T> extends State<GridCardsWidget<T>> {
-  List<T> items = [];
+  final List<T> _selectedItems = [];
 
-  // Items selected by the user
-  List<T> selectedItems = [];
-
-  @override
-  void initState() {
-    super.initState();
-    loadItems();
+  bool _isSelected(T item) {
+    return _selectedItems.any(
+      (selectedItem) => widget.getId(selectedItem) == widget.getId(item),
+    );
   }
 
-  Future<void> loadItems() async {
-    final String jsonString = await rootBundle.loadString(widget.jsonPath);
-
-    final List<dynamic> jsonData = jsonDecode(jsonString);
-
-    final List<T> loadedItems = jsonData
-        .map((item) => widget.fromJson(item as Map<String, dynamic>))
-        .toList();
-
-    if (!mounted) return;
-
+  void _toggleSelection(T item) {
     setState(() {
-      items = loadedItems;
+      final index = _selectedItems.indexWhere(
+        (selectedItem) => widget.getId(selectedItem) == widget.getId(item),
+      );
+
+      if (index != -1) {
+        _selectedItems.removeAt(index);
+      } else {
+        _selectedItems.add(item);
+      }
     });
   }
 
-  void addItem(T item) {
-    final int itemId = widget.getId(item);
+  @override
+  void didUpdateWidget(covariant GridCardsWidget<T> oldWidget) {
+    super.didUpdateWidget(oldWidget);
 
-    // Prevent duplicates
-    final bool alreadyAdded = selectedItems.any(
-      (selectedItem) => widget.getId(selectedItem) == itemId,
+    // Remove selected items that no longer exist
+    // in the new library list.
+    _selectedItems.removeWhere(
+      (selectedItem) => !widget.items.any(
+        (item) => widget.getId(item) == widget.getId(selectedItem),
+      ),
     );
-
-    if (!alreadyAdded) {
-      setState(() {
-        selectedItems.add(item);
-      });
-
-      widget.onItemsSelected(List.from(selectedItems));
-    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(
-        top: 145.h,
-        left: 16.w,
-        right: 16.w,
-        bottom: 90.h,
-      ),
-      child: GridView.builder(
-        itemCount: items.length,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 14.w,
-          mainAxisSpacing: 14.h,
-          childAspectRatio: 0.82,
+    if (widget.items.isEmpty) {
+      return Center(
+        child: Text(
+          'No items available',
+          style: TextStyle(fontSize: 14.sp, fontFamily: 'Rubik'),
         ),
-        itemBuilder: (context, index) {
-          final T item = items[index];
+      );
+    }
 
-          final int itemId = widget.getId(item);
+    return Column(
+      children: [
+        Expanded(
+          child: GridView.builder(
+            padding: EdgeInsets.only(
+              left: 18.w,
+              right: 18.w,
+              top: 150.h,
+              bottom: 100.h,
+            ),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              crossAxisSpacing: 12,
+              mainAxisSpacing: 12,
+              childAspectRatio: 0.72,
+            ),
+            itemCount: widget.items.length,
+            itemBuilder: (context, index) {
+              final item = widget.items[index];
 
-          final bool isAdded = selectedItems.any(
-            (selectedItem) => widget.getId(selectedItem) == itemId,
-          );
+              final selected = _isSelected(item);
 
-          return ClipRRect(
-            borderRadius: BorderRadius.circular(16.r),
-            child: Stack(
-              children: [
-                // Item Image
-                Positioned.fill(
-                  child: GestureDetector(
-                    onTap: () {
-                      widget.onItemTap(item);
-                    },
-                    child: Image.asset(
-                      '${widget.imagePath}/${widget.getImage(item)}',
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) {
-                        return Container(
-                          color: const Color(0xFFD0C4C4),
-                          child: Center(
+              return GestureDetector(
+                onTap: () {
+                  if (widget.onItemTap != null) {
+                    widget.onItemTap!(item);
+                  }
+                },
+                child: Stack(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFFFF7F7),
+                        borderRadius: BorderRadius.circular(16.r),
+                        border: Border.all(
+                          color: selected
+                              ? const Color(0xFF445E75)
+                              : Colors.transparent,
+                          width: 2,
+                        ),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Expanded(
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.vertical(
+                                top: Radius.circular(16.r),
+                              ),
+                              child: Image.asset(
+                                widget.getImage(item),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+
+                          Padding(
+                            padding: EdgeInsets.all(8.w),
                             child: Text(
-                              'No Image',
+                              widget.getTitle(item),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.center,
                               style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 12.sp,
+                                fontFamily: 'Rubik',
+                                fontSize: 13.sp,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
                           ),
-                        );
-                      },
-                    ),
-                  ),
-                ),
-
-                // Gradient
-                Positioned(
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  height: 60.h,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          Colors.grey.withOpacity(0.5),
-                          Colors.black.withOpacity(0.6),
                         ],
                       ),
                     ),
-                  ),
-                ),
 
-                // Item Title
-                Positioned(
-                  bottom: 12.h,
-                  left: 12.w,
-                  right: 50.w,
-                  child: Text(
-                    widget.getTitle(item),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 14.sp,
-                      fontFamily: 'Rubik',
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-
-                // Add Button
-                Positioned(
-                  bottom: 10.h,
-                  right: 10.w,
-                  child: Material(
-                    shape: const CircleBorder(),
-                    child: InkWell(
-                      customBorder: const CircleBorder(),
-                      onTap: () {
-                        addItem(item);
-                      },
-                      child: Container(
-                        width: 32.w,
-                        height: 32.h,
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
-                          shape: BoxShape.circle,
-                        ),
-                        child: Icon(
-                          isAdded ? Icons.check : Icons.add,
-                          color: Colors.black,
-                          size: 20,
+                    Positioned(
+                      top: 8.h,
+                      right: 8.w,
+                      child: GestureDetector(
+                        onTap: () {
+                          _toggleSelection(item);
+                        },
+                        child: Container(
+                          width: 28.w,
+                          height: 28.w,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: selected
+                                ? const Color(0xFF445E75)
+                                : Colors.white,
+                            border: Border.all(
+                              color: const Color(0xFF445E75),
+                              width: 1.5,
+                            ),
+                          ),
+                          child: selected
+                              ? Icon(
+                                  Icons.check,
+                                  size: 18.sp,
+                                  color: Colors.white,
+                                )
+                              : null,
                         ),
                       ),
                     ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
+
+        if (_selectedItems.isNotEmpty)
+          Padding(
+            padding: EdgeInsets.only(left: 20.w, right: 20.w, bottom: 80.h),
+            child: SizedBox(
+              width: double.infinity,
+              height: 48.h,
+              child: ElevatedButton(
+                onPressed: () {
+                  widget.onItemsSelected?.call(List<T>.from(_selectedItems));
+
+                  setState(() {
+                    _selectedItems.clear();
+                  });
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF445E75),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(14.r),
+                    side: const BorderSide(
+                      color: Color.fromARGB(255, 52, 72, 88), // لون الإطار أبيض
+                      width: 5, // سمك الإطار (تقدر تغييره حسب رغبتك)
+                    ),
                   ),
                 ),
-              ],
+                child: Text(
+                  'Add Selected',
+                  style: TextStyle(
+                    fontFamily: 'Rubik',
+                    fontSize: 15.sp,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
             ),
-          );
-        },
-      ),
+          ),
+      ],
     );
   }
 }

@@ -1,74 +1,103 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/models/grid_exercise.dart';
+import 'package:flutter_application_1/models/exercise.dart';
 import 'package:flutter_application_1/models/exercise_set.dart';
+import 'package:flutter_application_1/models/grid_exercise.dart';
 import 'package:flutter_application_1/widgets/number_field.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class LibExerciseScreen extends StatefulWidget {
   final GridExercise exercise;
 
-  const LibExerciseScreen({super.key, required this.exercise});
+  const LibExerciseScreen({
+    super.key,
+    required this.exercise,
+  });
 
   @override
-  State<LibExerciseScreen> createState() => _LibExerciseScreenState();
+  State<LibExerciseScreen> createState() =>
+      _LibExerciseScreenState();
 }
 
-class _LibExerciseScreenState extends State<LibExerciseScreen> {
+class _LibExerciseScreenState
+    extends State<LibExerciseScreen> {
+  // =========================================================
   // SETS
+  // =========================================================
+
   final List<ExerciseSet> sets = [];
 
   @override
   void initState() {
     super.initState();
 
-    // Default set
+    // At least one set is always required.
     addSet();
   }
 
   @override
   Widget build(BuildContext context) {
-    final GridExercise exercise = widget.exercise;
+    final GridExercise exercise =
+        widget.exercise;
+
     return Scaffold(
-      backgroundColor: const Color(0xFFE4D9D9),
+      backgroundColor:
+          const Color(0xFFE4D9D9),
 
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 45),
+        padding: EdgeInsets.symmetric(
+          horizontal: 15.w,
+          vertical: 45.h,
+        ),
 
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment:
+              CrossAxisAlignment.start,
 
           children: [
-            // =========================
+            // =========================================================
             // EXERCISE NAME
-            // =========================
+            // =========================================================
 
             Text(
               exercise.name,
-              style: const TextStyle(
-                fontSize: 24,
+
+              style: TextStyle(
+                fontSize: 24.sp,
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
               ),
             ),
 
-            const SizedBox(height: 15),
+            SizedBox(height: 15.h),
 
-            // =========================
+            // =========================================================
             // EXERCISE IMAGE
-            // =========================
+            // =========================================================
+
             Container(
               width: double.infinity,
-              height: 190,
+              height: 190.h,
 
               decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 241, 233, 233),
+                color: const Color.fromARGB(
+                  255,
+                  241,
+                  233,
+                  233,
+                ),
 
-                borderRadius: BorderRadius.circular(12),
+                borderRadius:
+                    BorderRadius.circular(12.r),
 
-                border: Border.all(color: Colors.black26, width: 2),
+                border: Border.all(
+                  color: Colors.black26,
+                  width: 2,
+                ),
               ),
 
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius:
+                    BorderRadius.circular(12.r),
 
                 child: Image.asset(
                   'assets/images/exercises/${exercise.image}',
@@ -78,7 +107,11 @@ class _LibExerciseScreenState extends State<LibExerciseScreen> {
 
                   fit: BoxFit.cover,
 
-                  errorBuilder: (context, error, stackTrace) {
+                  errorBuilder: (
+                    context,
+                    error,
+                    stackTrace,
+                  ) {
                     return const Center(
                       child: Icon(
                         Icons.image_outlined,
@@ -91,67 +124,77 @@ class _LibExerciseScreenState extends State<LibExerciseScreen> {
               ),
             ),
 
-            const SizedBox(height: 20),
+            SizedBox(height: 20.h),
 
-            // =========================
+            // =========================================================
             // TARGET MUSCLE + DIFFICULTY
-            // =========================
+            // =========================================================
+
             Row(
               children: [
-                // TARGET MUSCLE
                 Expanded(
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment:
+                        CrossAxisAlignment.start,
 
                     children: [
-                      const Text(
+                      Text(
                         "Target Muscle :",
+
                         style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w400,
+                          fontSize: 13.sp,
+                          fontWeight:
+                              FontWeight.w400,
                         ),
                       ),
 
-                      const SizedBox(height: 8),
+                      SizedBox(height: 8.h),
 
                       Text(
-                        exercise.targetMuscles.isNotEmpty
-                            ? exercise.targetMuscles.first
+                        exercise.targetMuscles
+                                .isNotEmpty
+                            ? exercise
+                                .targetMuscles
+                                .first
                             : "none",
 
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
+                        style: TextStyle(
+                          fontSize: 16.sp,
+                          fontWeight:
+                              FontWeight.w400,
                         ),
                       ),
                     ],
                   ),
                 ),
 
-                const SizedBox(width: 5),
+                SizedBox(width: 5.w),
 
-                // DIFFICULTY
                 Expanded(
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment:
+                        CrossAxisAlignment.start,
 
                     children: [
-                      const Text(
+                      Text(
                         "Difficulty :",
+
                         style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w400,
+                          fontSize: 13.sp,
+                          fontWeight:
+                              FontWeight.w400,
                         ),
                       ),
 
-                      const SizedBox(height: 8),
+                      SizedBox(height: 8.h),
 
                       Text(
                         exercise.difficulty,
 
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
+                        style: TextStyle(
+                          fontSize: 16.sp,
+                          fontWeight:
+                              FontWeight.w400,
                         ),
                       ),
                     ],
@@ -160,46 +203,66 @@ class _LibExerciseScreenState extends State<LibExerciseScreen> {
               ],
             ),
 
-            const SizedBox(height: 10),
+            SizedBox(height: 10.h),
 
-            // =========================
+            // =========================================================
             // SETS TITLE
-            // =========================
+            // =========================================================
+
             Row(
               children: const [
                 Text(
                   "Sets",
-                  style: TextStyle(fontSize: 13, fontWeight: FontWeight.w300),
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight:
+                        FontWeight.w300,
+                  ),
                 ),
 
                 SizedBox(width: 25),
 
                 Text(
                   "Weight (kg)",
-                  style: TextStyle(fontSize: 13, fontWeight: FontWeight.w300),
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight:
+                        FontWeight.w300,
+                  ),
                 ),
 
                 SizedBox(width: 40),
 
                 Text(
                   "Reps",
-                  style: TextStyle(fontSize: 13, fontWeight: FontWeight.w300),
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight:
+                        FontWeight.w300,
+                  ),
                 ),
               ],
             ),
 
-            // =========================
+            // =========================================================
             // SETS LIST
-            // =========================
+            // =========================================================
+
             Expanded(
               child: ListView.builder(
                 itemCount: sets.length,
 
-                itemBuilder: (context, index) {
-                  final ExerciseSet currentSet = sets[index];
+                itemBuilder:
+                    (context, index) {
+                  final ExerciseSet
+                      currentSet =
+                      sets[index];
 
                   return Padding(
-                    padding: const EdgeInsets.only(bottom: 10),
+                    padding:
+                        const EdgeInsets.only(
+                      bottom: 10,
+                    ),
 
                     child: Row(
                       children: [
@@ -209,41 +272,60 @@ class _LibExerciseScreenState extends State<LibExerciseScreen> {
                           child: Text(
                             "Set ${index + 1}",
 
-                            style: const TextStyle(fontWeight: FontWeight.w500),
+                            style:
+                                const TextStyle(
+                              fontWeight:
+                                  FontWeight.w500,
+                            ),
                           ),
                         ),
 
-                        const SizedBox(width: 5),
+                        const SizedBox(
+                          width: 5,
+                        ),
 
-                        // WEIGHT
                         Expanded(
                           child: NumberField(
-                            controller: currentSet.weightController,
+                            controller:
+                                currentSet
+                                    .weightController,
+
                             hintText: "Kg",
                           ),
                         ),
 
-                        const SizedBox(width: 8),
+                        const SizedBox(
+                          width: 8,
+                        ),
 
-                        // REPS
                         Expanded(
                           child: NumberField(
-                            controller: currentSet.repsController,
+                            controller:
+                                currentSet
+                                    .repsController,
+
                             hintText: "Reps",
                           ),
                         ),
 
-                        const SizedBox(width: 5),
+                        const SizedBox(
+                          width: 5,
+                        ),
 
-                        // DELETE SET
                         IconButton(
-                          onPressed: sets.length == 1
-                              ? null
-                              : () {
-                                  removeSet(index);
-                                },
+                          onPressed:
+                              sets.length == 1
+                                  ? null
+                                  : () {
+                                      removeSet(
+                                        index,
+                                      );
+                                    },
 
-                          icon: const Icon(Icons.delete_outline),
+                          icon: const Icon(
+                            Icons
+                                .delete_outline,
+                          ),
                         ),
                       ],
                     ),
@@ -252,21 +334,29 @@ class _LibExerciseScreenState extends State<LibExerciseScreen> {
               ),
             ),
 
-            // =========================
+            // =========================================================
             // ADD SET
-            // =========================
+            // =========================================================
+
             SizedBox(
               width: double.infinity,
               height: 55,
 
               child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF4B6478),
+                style:
+                    ElevatedButton.styleFrom(
+                  backgroundColor:
+                      const Color(0xFF4B6478),
 
-                  foregroundColor: Colors.white,
+                  foregroundColor:
+                      Colors.white,
 
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
+                  shape:
+                      RoundedRectangleBorder(
+                    borderRadius:
+                        BorderRadius.circular(
+                      16,
+                    ),
                   ),
 
                   elevation: 0,
@@ -277,69 +367,96 @@ class _LibExerciseScreenState extends State<LibExerciseScreen> {
                 child: const Text(
                   "+ Add Set",
 
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight:
+                        FontWeight.w500,
+                  ),
                 ),
               ),
             ),
 
-            const SizedBox(height: 12),
+            SizedBox(height: 12.h),
 
-            // =========================
-            // CANCEL + DONE
-            // =========================
+            // =========================================================
+            // CANCEL + ADD
+            // =========================================================
+
             Row(
               children: [
                 // CANCEL
                 Expanded(
                   child: SizedBox(
-                    height: 50,
+                    height: 50.h,
 
                     child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFFEF6C6C),
+                      style:
+                          ElevatedButton.styleFrom(
+                        backgroundColor:
+                            const Color(
+                          0xFFEF6C6C,
+                        ),
 
-                        foregroundColor: Colors.white,
+                        foregroundColor:
+                            Colors.white,
 
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
+                        shape:
+                            RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.circular(
+                            16.r,
+                          ),
                         ),
 
                         elevation: 0,
                       ),
 
                       onPressed: () {
-                        Navigator.pop(context);
+                        Navigator.pop(
+                          context,
+                        );
                       },
 
-                      child: const Text(
+                      child: Text(
                         "Cancel",
 
                         style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
+                          fontSize: 16.sp,
+                          fontWeight:
+                              FontWeight.bold,
                         ),
                       ),
                     ),
                   ),
                 ),
 
-                const SizedBox(width: 12),
+                SizedBox(width: 12.w),
 
-                // DONE
+                // ADD
                 Expanded(
                   child: SizedBox(
-                    height: 50,
+                    height: 50.h,
 
                     child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFFE5DDD5),
+                      style:
+                          ElevatedButton.styleFrom(
+                        backgroundColor:
+                            const Color(
+                          0xFFE5DDD5,
+                        ),
 
-                        foregroundColor: Colors.black,
+                        foregroundColor:
+                            Colors.black,
 
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
+                        shape:
+                            RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.circular(
+                            16.r,
+                          ),
 
-                          side: const BorderSide(
+                          side:
+                              const BorderSide(
                             color: Colors.black54,
                             width: 1,
                           ),
@@ -349,15 +466,41 @@ class _LibExerciseScreenState extends State<LibExerciseScreen> {
                       ),
 
                       onPressed: () {
-                        // Save exercise to workout
+                        final Exercise
+                            exerciseToAdd =
+                            Exercise(
+                          title: exercise.name,
+
+                          muscleGroup:
+                              exercise
+                                  .targetMuscles
+                                  .isNotEmpty
+                              ? exercise
+                                  .targetMuscles
+                                  .first
+                              : null,
+
+                          difficulty:
+                              exercise.difficulty,
+
+                          assetImage:
+                              'assets/images/exercises/${exercise.image}',
+                              sets: List.from(sets),
+                        );
+
+                        Navigator.pop(
+                          context,
+                          exerciseToAdd,
+                        );
                       },
 
-                      child: const Text(
-                        "Done",
+                      child: Text(
+                        "Add Exercise",
 
                         style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
+                          fontSize: 16.sp,
+                          fontWeight:
+                              FontWeight.bold,
                         ),
                       ),
                     ),
@@ -371,25 +514,27 @@ class _LibExerciseScreenState extends State<LibExerciseScreen> {
     );
   }
 
-  // =========================
+  // =========================================================
   // ADD SET
-  // =========================
+  // =========================================================
 
   void addSet() {
     setState(() {
       sets.add(
         ExerciseSet(
-          weightController: TextEditingController(),
+          weightController:
+              TextEditingController(),
 
-          repsController: TextEditingController(),
+          repsController:
+              TextEditingController(),
         ),
       );
     });
   }
 
-  // =========================
+  // =========================================================
   // REMOVE SET
-  // =========================
+  // =========================================================
 
   void removeSet(int index) {
     if (sets.length == 1) {
@@ -402,9 +547,9 @@ class _LibExerciseScreenState extends State<LibExerciseScreen> {
     });
   }
 
-  // =========================
+  // =========================================================
   // DISPOSE
-  // =========================
+  // =========================================================
 
   @override
   void dispose() {

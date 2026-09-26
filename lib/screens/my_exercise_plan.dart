@@ -1,11 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/models/exercise.dart';
-import 'package:flutter_application_1/models/grid_exercise.dart';
 import 'package:flutter_application_1/screens/create_exercisesscreen.dart';
+import 'package:flutter_application_1/screens/my_nutrition_plan.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import 'package:flutter_application_1/cubits/exercise/exercise_cubit.dart';
+import 'package:flutter_application_1/cubits/exercise/exercise_state.dart';
+import 'package:flutter_application_1/cubits/workout_plan/workout_plan_cubit.dart';
+
+import 'package:flutter_application_1/models/exercise.dart';
+import 'package:flutter_application_1/models/exercise_set.dart';
+import 'package:flutter_application_1/models/grid_exercise.dart';
+
 import 'package:flutter_application_1/screens/lib_exercise_screen.dart';
+
 import 'package:flutter_application_1/widgets/custom_buttom_navbar.dart';
 import 'package:flutter_application_1/widgets/grid_cards_widget.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class MyExcersisePlan extends StatefulWidget {
   const MyExcersisePlan({super.key});
@@ -15,30 +25,71 @@ class MyExcersisePlan extends StatefulWidget {
 }
 
 class _MyExcersisePlanState extends State<MyExcersisePlan> {
-  int _currentIndex = 2;
+  final int _currentIndex = 2;
 
-  // Exercises selected from the library
-  List<GridExercise> selectedExercises = [];
+  @override
+  void initState() {
+    super.initState();
+
+    // =========================================================
+    // LOAD EXERCISE LIBRARY
+    // =========================================================
+
+    context.read<ExerciseCubit>().getExercises();
+  }
+
+  // =========================================================
+  // CONVERT LIBRARY EXERCISE TO EXERCISE MODEL
+  // =========================================================
+
+  Exercise convertToExercise(GridExercise gridExercise) {
+    return Exercise(
+      title: gridExercise.name,
+
+      muscleGroup: gridExercise.targetMuscles.join(', '),
+
+      difficulty: gridExercise.difficulty,
+
+      sets: [
+        ExerciseSet(
+          weightController: TextEditingController(),
+
+          repsController: TextEditingController(),
+        ),
+      ],
+
+      assetImage: 'assets/images/exercises/${gridExercise.image}',
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFE4D9D9),
+
       body: Stack(
         children: [
-          // Main Content
+          // =========================================================
+          // MAIN CONTENT
+          // =========================================================
+
           Positioned.fill(child: _buildCurrentScreenContent()),
 
-          // Header
+          // =========================================================
+          // HEADER
+          // =========================================================
           Positioned(
             top: 22.h,
             left: 18.w,
             right: 18.w,
+
             child: Container(
               width: double.infinity,
               height: 111.h,
+
               decoration: ShapeDecoration(
                 color: const Color(0xFF445E75),
+
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(22.r),
                 ),
@@ -46,29 +97,42 @@ class _MyExcersisePlanState extends State<MyExcersisePlan> {
             ),
           ),
 
-          // My Plan Button
+          // =========================================================
+          // MY PLAN BUTTON
+          // =========================================================
           Positioned(
             left: 90.w,
             top: 75.h,
+
             child: Opacity(
               opacity: 0.90,
+
               child: SizedBox(
                 width: 78.w,
                 height: 26.h,
+
                 child: ElevatedButton(
                   onPressed: () {},
+
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFFFFF7F7),
+
                     elevation: 0,
+
                     padding: EdgeInsets.zero,
+
                     side: const BorderSide(width: 2, color: Color(0xFF445E75)),
+
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5.r),
                     ),
                   ),
+
                   child: Text(
-                    'My Plan',
+                    'Exercises',
+
                     textAlign: TextAlign.center,
+
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 10.sp,
@@ -81,31 +145,44 @@ class _MyExcersisePlanState extends State<MyExcersisePlan> {
             ),
           ),
 
-          // Exercises Button
+          // =========================================================
+          // EXERCISES BUTTON
+          // =========================================================
           Positioned(
             left: 190.w,
             top: 75.h,
+
             child: Opacity(
               opacity: 0.90,
+
               child: SizedBox(
                 width: 78.w,
                 height: 26.h,
+
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.pop(context, selectedExercises);
+                    Navigator.pop(context);
                   },
+
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFFFFF7F7),
+
                     elevation: 0,
+
                     padding: EdgeInsets.zero,
+
                     side: const BorderSide(width: 2, color: Color(0xFF445E75)),
+
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5.r),
                     ),
                   ),
+
                   child: Text(
-                    'Exercises',
+                    'My Plan',
+
                     textAlign: TextAlign.center,
+
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 10.sp,
@@ -118,14 +195,19 @@ class _MyExcersisePlanState extends State<MyExcersisePlan> {
             ),
           ),
 
-          // Fitness Title
+          // =========================================================
+          // FITNESS TITLE
+          // =========================================================
           Positioned(
             top: 42.h,
             left: 124.w,
             right: 124.w,
+
             child: Text(
               'Fitness',
+
               textAlign: TextAlign.center,
+
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 22.sp,
@@ -135,55 +217,92 @@ class _MyExcersisePlanState extends State<MyExcersisePlan> {
             ),
           ),
 
-          // Create Exercise Button
-          if (_currentIndex == 2)
-            Positioned(
-              bottom: 85.h,
-              right: 15.w,
-              child: Material(
-                color: Colors.transparent,
-                child: Container(
-                  height: 34.h,
-                  width: 88.w,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(9.r),
-                    border: Border.all(
-                      color: const Color.fromARGB(255, 52, 72, 88),
-                      width: 2.8,
-                    ),
-                  ),
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(80.r),
-                    onTap: () async {
-                      await Navigator.push<Exercise>(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const CreateExercisesScreen(),
-                        ),
-                      );
-                    },
-                    child: Image.asset(
-                      'assets/images/Icons/Custom Button.png',
-                      width: 90.w,
-                      height: 90.h,
-                      fit: BoxFit.contain,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-
-          // Bottom Navigation
+          // =========================================================
+          // CREATE EXERCISE BUTTON
+          // =========================================================
+          // if (_currentIndex == 2)
+          // Positioned(
+          //   bottom: 85.h,
+          //   right: 15.w,
+          //   child: Material(
+          //     color: Colors.transparent,
+          //     child: Container(
+          //       height: 34.h,
+          //       width: 88.w,
+          //       decoration: BoxDecoration(
+          //         borderRadius:
+          //             BorderRadius.circular(9.r),
+          //         border: Border.all(
+          //           color:
+          //               const Color.fromARGB(
+          //             255,
+          //             52,
+          //             72,
+          //             88,
+          //           ),
+          //           width: 2.8,
+          //         ),
+          //       ),
+          //       child: InkWell(
+          //         borderRadius:
+          //             BorderRadius.circular(80.r),
+          //         onTap: () async {
+          //           final Exercise?
+          //               newExercise =
+          //               await Navigator.push<
+          //                   Exercise>(
+          //             context,
+          //             MaterialPageRoute(
+          //               builder: (context) =>
+          //                   const CreateExercisesScreen(),
+          //             ),
+          //           );
+          //           if (newExercise !=
+          //                   null &&
+          //               context.mounted) {
+          //             context
+          //                 .read<
+          //                     WorkoutPlanCubit>()
+          //                 .addExercise(
+          //                   newExercise,
+          //                 );
+          //           }
+          //         },
+          //         child: Image.asset(
+          //           'assets/images/Icons/Custom Button.png',
+          //           width: 90.w,
+          //           height: 90.h,
+          //           fit: BoxFit.contain,
+          //         ),
+          //       ),
+          //     ),
+          //   ),
+          // ),
+          // =========================================================
+          // BOTTOM NAVIGATION
+          // =========================================================
           Positioned(
             left: 16.w,
             right: 16.w,
             bottom: 10.h,
+
             child: CustomBottomNavBar(
-              currentIndex: _currentIndex,
+              currentIndex: 2,
+
               onItemSelected: (index) {
-                setState(() {
-                  _currentIndex = index;
-                });
+                if (index == 2) {
+                  return;
+                }
+
+                if (index == 1) {
+                  Navigator.pushReplacement(
+                    context,
+
+                    MaterialPageRoute(
+                      builder: (context) => const MyNutritionPlan(),
+                    ),
+                  );
+                }
               },
             ),
           ),
@@ -191,6 +310,10 @@ class _MyExcersisePlanState extends State<MyExcersisePlan> {
       ),
     );
   }
+
+  // =========================================================
+  // CURRENT SCREEN CONTENT
+  // =========================================================
 
   Widget _buildCurrentScreenContent() {
     switch (_currentIndex) {
@@ -211,41 +334,57 @@ class _MyExcersisePlanState extends State<MyExcersisePlan> {
     }
   }
 
+  // =========================================================
+  // EXERCISE LIBRARY
+  // =========================================================
+
   Widget _buildBodyContent() {
-    return GridCardsWidget<GridExercise>(
-      jsonPath: 'assets/data/exercises.json',
+    return BlocBuilder<ExerciseCubit, ExerciseState>(
+      builder: (context, state) {
+        if (state is ExerciseLoading) {
+          return const Center(child: CircularProgressIndicator());
+        }
 
-      imagePath: 'assets/images/exercises',
+        if (state is ExerciseFailure) {
+          return Center(child: Text('Error: ${state.errorMessage}'));
+        }
 
-      fromJson: (json) {
-        return GridExercise.fromJson(json);
-      },
+        if (state is ExerciseSuccess) {
+          final List<GridExercise> exercises = state.exercises;
 
-      getId: (exercise) {
-        return exercise.id;
-      },
+          return GridCardsWidget<GridExercise>(
+            items: exercises,
 
-      getTitle: (exercise) {
-        return exercise.name;
-      },
+            getId: (exercise) => exercise.id,
 
-      getImage: (exercise) {
-        return exercise.image;
-      },
+            getTitle: (exercise) => exercise.name,
 
-      onItemTap: (exercise) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => LibExerciseScreen(exercise: exercise),
-          ),
-        );
-      },
+            getImage: (exercise) => 'assets/images/exercises/${exercise.image}',
 
-      onItemsSelected: (exercises) {
-        setState(() {
-          selectedExercises = exercises;
-        });
+            onItemTap: (exercise) {
+              Navigator.push(
+                context,
+
+                MaterialPageRoute(
+                  builder: (context) => LibExerciseScreen(exercise: exercise),
+                ),
+              );
+            },
+
+            onItemsSelected: (selectedExercises) {
+              final WorkoutPlanCubit workoutPlanCubit = context
+                  .read<WorkoutPlanCubit>();
+
+              for (final GridExercise gridExercise in selectedExercises) {
+                final Exercise exercise = convertToExercise(gridExercise);
+
+                workoutPlanCubit.addExercise(exercise);
+              }
+            },
+          );
+        }
+
+        return const SizedBox.shrink();
       },
     );
   }

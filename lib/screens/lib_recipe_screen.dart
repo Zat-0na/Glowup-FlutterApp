@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_application_1/models/grid_recipe.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class LibRecipeScreen extends StatefulWidget {
   final GridRecipe recipe;
 
-  const LibRecipeScreen({super.key, required this.recipe});
+  const LibRecipeScreen({
+    super.key,
+    required this.recipe,
+  });
 
   @override
-  State<LibRecipeScreen> createState() => _LibRecipeScreenState();
+  State<LibRecipeScreen> createState() =>
+      _LibRecipeScreenState();
 }
 
-class _LibRecipeScreenState extends State<LibRecipeScreen> {
+class _LibRecipeScreenState
+    extends State<LibRecipeScreen> {
   @override
   Widget build(BuildContext context) {
     final GridRecipe recipe = widget.recipe;
@@ -20,15 +25,19 @@ class _LibRecipeScreenState extends State<LibRecipeScreen> {
       backgroundColor: const Color(0xFFE4D9D9),
 
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 45.h),
+        padding: EdgeInsets.symmetric(
+          horizontal: 15.w,
+          vertical: 45.h,
+        ),
 
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment:
+              CrossAxisAlignment.start,
 
           children: [
-            // =========================
+            // =========================================================
             // RECIPE NAME
-            // =========================
+            // =========================================================
 
             Text(
               recipe.title,
@@ -41,23 +50,32 @@ class _LibRecipeScreenState extends State<LibRecipeScreen> {
 
             SizedBox(height: 15.h),
 
-            // =========================
+            // =========================================================
             // RECIPE IMAGE
-            // =========================
+            // =========================================================
+
             Container(
               width: double.infinity,
               height: 190.h,
 
               decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 241, 233, 233),
-
-                borderRadius: BorderRadius.circular(12.r),
-
-                border: Border.all(color: Colors.black26, width: 2),
+                color: const Color.fromARGB(
+                  255,
+                  241,
+                  233,
+                  233,
+                ),
+                borderRadius:
+                    BorderRadius.circular(12.r),
+                border: Border.all(
+                  color: Colors.black26,
+                  width: 2,
+                ),
               ),
 
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(12.r),
+                borderRadius:
+                    BorderRadius.circular(12.r),
 
                 child: Image.asset(
                   'assets/images/recipes/${recipe.image}',
@@ -67,7 +85,11 @@ class _LibRecipeScreenState extends State<LibRecipeScreen> {
 
                   fit: BoxFit.cover,
 
-                  errorBuilder: (context, error, stackTrace) {
+                  errorBuilder: (
+                    context,
+                    error,
+                    stackTrace,
+                  ) {
                     return const Center(
                       child: Icon(
                         Icons.image_outlined,
@@ -82,22 +104,25 @@ class _LibRecipeScreenState extends State<LibRecipeScreen> {
 
             SizedBox(height: 20.h),
 
-            // =========================
+            // =========================================================
             // MEAL TYPE + CALORIES
-            // =========================
+            // =========================================================
+
             Row(
               children: [
                 // MEAL TYPE
                 Expanded(
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment:
+                        CrossAxisAlignment.start,
 
                     children: [
                       Text(
                         "Meal Type :",
                         style: TextStyle(
                           fontSize: 13.sp,
-                          fontWeight: FontWeight.w400,
+                          fontWeight:
+                              FontWeight.w400,
                         ),
                       ),
 
@@ -107,7 +132,8 @@ class _LibRecipeScreenState extends State<LibRecipeScreen> {
                         recipe.mealType,
                         style: TextStyle(
                           fontSize: 16.sp,
-                          fontWeight: FontWeight.w400,
+                          fontWeight:
+                              FontWeight.w400,
                         ),
                       ),
                     ],
@@ -119,14 +145,16 @@ class _LibRecipeScreenState extends State<LibRecipeScreen> {
                 // CALORIES
                 Expanded(
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment:
+                        CrossAxisAlignment.start,
 
                     children: [
                       Text(
                         "Calories :",
                         style: TextStyle(
                           fontSize: 13.sp,
-                          fontWeight: FontWeight.w400,
+                          fontWeight:
+                              FontWeight.w400,
                         ),
                       ),
 
@@ -136,7 +164,8 @@ class _LibRecipeScreenState extends State<LibRecipeScreen> {
                         "${recipe.totalCalories.toStringAsFixed(0)} kcal",
                         style: TextStyle(
                           fontSize: 16.sp,
-                          fontWeight: FontWeight.w400,
+                          fontWeight:
+                              FontWeight.w400,
                         ),
                       ),
                     ],
@@ -147,12 +176,16 @@ class _LibRecipeScreenState extends State<LibRecipeScreen> {
 
             SizedBox(height: 20.h),
 
-            // =========================
+            // =========================================================
             // RECIPE INFORMATION
-            // =========================
+            // =========================================================
+
             Text(
               "Recipe Information",
-              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: 18.sp,
+                fontWeight: FontWeight.bold,
+              ),
             ),
 
             SizedBox(height: 10.h),
@@ -166,16 +199,20 @@ class _LibRecipeScreenState extends State<LibRecipeScreen> {
 
                   decoration: BoxDecoration(
                     color: const Color(0xFFF1E9E9),
-
-                    borderRadius: BorderRadius.circular(16.r),
-
-                    border: Border.all(color: Colors.black26, width: 1),
+                    borderRadius:
+                        BorderRadius.circular(16.r),
+                    border: Border.all(
+                      color: Colors.black26,
+                      width: 1,
+                    ),
                   ),
 
                   child: Text(
-                    "This recipe is a ${recipe.mealType.toLowerCase()} "
+                    "This recipe is a "
+                    "${recipe.mealType.toLowerCase()} "
                     "with approximately "
-                    "${recipe.totalCalories.toStringAsFixed(0)} calories.",
+                    "${recipe.totalCalories.toStringAsFixed(0)} "
+                    "calories.",
                     style: TextStyle(
                       fontSize: 15.sp,
                       height: 1.5,
@@ -188,9 +225,10 @@ class _LibRecipeScreenState extends State<LibRecipeScreen> {
 
             SizedBox(height: 12.h),
 
-            // =========================
+            // =========================================================
             // CANCEL + ADD
-            // =========================
+            // =========================================================
+
             Row(
               children: [
                 // CANCEL
@@ -199,15 +237,19 @@ class _LibRecipeScreenState extends State<LibRecipeScreen> {
                     height: 50.h,
 
                     child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFFEF6C6C),
-
-                        foregroundColor: Colors.white,
-
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16.r),
+                      style:
+                          ElevatedButton.styleFrom(
+                        backgroundColor:
+                            const Color(0xFFEF6C6C),
+                        foregroundColor:
+                            Colors.white,
+                        shape:
+                            RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.circular(
+                            16.r,
+                          ),
                         ),
-
                         elevation: 0,
                       ),
 
@@ -219,7 +261,8 @@ class _LibRecipeScreenState extends State<LibRecipeScreen> {
                         "Cancel",
                         style: TextStyle(
                           fontSize: 16.sp,
-                          fontWeight: FontWeight.bold,
+                          fontWeight:
+                              FontWeight.bold,
                         ),
                       ),
                     ),
@@ -234,32 +277,39 @@ class _LibRecipeScreenState extends State<LibRecipeScreen> {
                     height: 50.h,
 
                     child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFFE5DDD5),
-
-                        foregroundColor: Colors.black,
-
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16.r),
-
+                      style:
+                          ElevatedButton.styleFrom(
+                        backgroundColor:
+                            const Color(0xFFE5DDD5),
+                        foregroundColor:
+                            Colors.black,
+                        shape:
+                            RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.circular(
+                            16.r,
+                          ),
                           side: const BorderSide(
                             color: Colors.black54,
                             width: 1,
                           ),
                         ),
-
                         elevation: 0,
                       ),
 
                       onPressed: () {
-                        Navigator.pop(context, recipe);
+                        Navigator.pop(
+                          context,
+                          recipe,
+                        );
                       },
 
                       child: Text(
                         "Add Recipe",
                         style: TextStyle(
                           fontSize: 16.sp,
-                          fontWeight: FontWeight.bold,
+                          fontWeight:
+                              FontWeight.bold,
                         ),
                       ),
                     ),

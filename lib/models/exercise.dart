@@ -1,13 +1,14 @@
 import 'dart:io';
 
+import 'exercise_set.dart';
+
 class Exercise {
   final String title;
   final String? muscleGroup;
   final String? difficulty;
   final File? imageFile;
-
-  // For exercises coming from JSON/assets
   final String? assetImage;
+  final List<ExerciseSet> sets;
 
   Exercise({
     required this.title,
@@ -15,5 +16,6 @@ class Exercise {
     this.difficulty,
     this.imageFile,
     this.assetImage,
+    required this.sets,
   });
 }
