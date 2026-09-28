@@ -41,11 +41,7 @@ class CustomBottomNavBar extends StatelessWidget {
             icon: Icons.open_in_full_rounded,
             label: 'Exercises',
           ),
-          _buildNavItem(
-            index: 3,
-            icon: Icons.bar_chart_rounded,
-            label: 'Statistics',
-          ),
+          _buildNavItem(index: 3, icon: Icons.settings, label: 'Setting'),
         ],
       ),
     );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/screens/home_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_application_1/screens/my_fitness_plan.dart';
 import 'package:flutter_application_1/screens/my_nutrition_plan.dart';
@@ -13,6 +14,7 @@ import 'cubits/exercise/exercise_cubit.dart';
 import 'cubits/workout_plan/workout_plan_cubit.dart';
 import 'cubits/recipe/recipe_cubit.dart';
 import 'cubits/nutrition_plan/nutrition_plan_cubit.dart';
+import 'cubits/profile/profile_cubit.dart';
 
 void main() {
   runApp(const MyApp());
@@ -50,6 +52,10 @@ class MyApp extends StatelessWidget {
           BlocProvider(
             create: (context) => NutritionPlanCubit(),
           ),
+
+          // Profile 
+          BlocProvider(
+            create: (context) => ProfileCubit()),
         ],
         child: MaterialApp(
           title: 'Flutter Demo',
@@ -58,7 +64,7 @@ class MyApp extends StatelessWidget {
               seedColor: Colors.deepPurple,
             ),
           ),
-          home: const MyNutritionPlan(),
+          home: const HomeScreen(),
         ),
       ),
     );

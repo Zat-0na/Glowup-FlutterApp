@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/screens/create_exercisesscreen.dart';
+import 'package:flutter_application_1/screens/home_screen.dart';
 import 'package:flutter_application_1/screens/my_nutrition_plan.dart';
+import 'package:flutter_application_1/screens/settings_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -85,7 +87,7 @@ class _MyExcersisePlanState extends State<MyExcersisePlan> {
 
             child: Container(
               width: double.infinity,
-              height: 111.h,
+              height: 125.h,
 
               decoration: ShapeDecoration(
                 color: const Color(0xFF445E75),
@@ -102,7 +104,7 @@ class _MyExcersisePlanState extends State<MyExcersisePlan> {
           // =========================================================
           Positioned(
             left: 90.w,
-            top: 75.h,
+            top: 95.h,
 
             child: Opacity(
               opacity: 0.90,
@@ -150,7 +152,7 @@ class _MyExcersisePlanState extends State<MyExcersisePlan> {
           // =========================================================
           Positioned(
             left: 190.w,
-            top: 75.h,
+            top: 95.h,
 
             child: Opacity(
               opacity: 0.90,
@@ -199,7 +201,7 @@ class _MyExcersisePlanState extends State<MyExcersisePlan> {
           // FITNESS TITLE
           // =========================================================
           Positioned(
-            top: 42.h,
+            top: 55.h,
             left: 124.w,
             right: 124.w,
 
@@ -213,6 +215,45 @@ class _MyExcersisePlanState extends State<MyExcersisePlan> {
                 fontSize: 22.sp,
                 fontFamily: 'SF Pro',
                 fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+
+          // ---------------------------------------------------
+          // BELL
+          // ---------------------------------------------------
+          Positioned(
+            left: 35.w,
+            top: 45.h,
+            child: Icon(
+              Icons.notifications_rounded,
+              color: Colors.white,
+              size: 20.sp,
+            ),
+          ),
+
+          // ---------------------------------------------------
+          // PROFILE
+          // ---------------------------------------------------
+          Positioned(
+            right: 35.w,
+            top: 45.h,
+            child: GestureDetector(
+              onTap: () {
+                // Settings will be connected later.
+              },
+              child: Container(
+                width: 23.w,
+                height: 23.w,
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.person_rounded,
+                  color: const Color(0xFF49647B),
+                  size: 17.sp,
+                ),
               ),
             ),
           ),
@@ -302,6 +343,23 @@ class _MyExcersisePlanState extends State<MyExcersisePlan> {
                       builder: (context) => const MyNutritionPlan(),
                     ),
                   );
+                }
+                if (index == 0) {
+                  Navigator.pushReplacement(
+                    context,
+
+                    MaterialPageRoute(builder: (context) => const HomeScreen()),
+                  );
+                }
+
+                if (index == 3) {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const SettingsScreen(),
+                    ),
+                  );
+                  return;
                 }
               },
             ),
