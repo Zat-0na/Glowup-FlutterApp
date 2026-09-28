@@ -2,7 +2,7 @@
 
 A mobile application built with **Flutter & Dart** that brings **fitness and nutrition planning into one organized platform**.
 
-Instead of keeping workouts in notes, spreadsheets, and separate meal records, the app provides a structured way to **create, organize, edit, and manage exercises and meals** in one place.
+Instead of keeping workouts in notes, spreadsheets, and separate meal records, **GlowUp** provides a structured way to **create, organize, edit, and manage exercises and meals** in one place.
 
 > **Organize, design, and simplify a healthy lifestyle through exercise and nutrition.**
 
@@ -10,7 +10,7 @@ Instead of keeping workouts in notes, spreadsheets, and separate meal records, t
 
 ## 📱 About the Project
 
-**Fitness & Nutrition Organizer** is designed to help users manage their personal workout and nutrition plans through two main sections:
+**GlowUp** is a mobile application designed to help users manage their personal workout and nutrition plans through two main sections:
 
 * 🏋️ **Fitness**
 * 🍎 **Nutrition**
@@ -51,13 +51,11 @@ Users can choose items from built-in libraries or create their own custom exerci
 * Automatically update nutritional values when ingredient quantities change
 * Organize meals into personal nutrition plans
 
-These features are based on the project's defined scope and requirements.
-
 ---
 
 ## 📚 Libraries
 
-The application provides ready-made libraries to make getting started easier:
+**GlowUp** provides ready-made libraries to make getting started easier:
 
 * **Exercise Library**
 * **Meal Library**
@@ -70,9 +68,9 @@ Users can select items from these libraries and combine them with their own cust
 
 The application is not limited to predefined data.
 
-Users can create their own:
+Users can create their own custom exercises and meals.
 
-**Custom Exercises**
+### Custom Exercises
 
 ```text
 Exercise
@@ -84,7 +82,7 @@ Exercise
       └── Repetitions
 ```
 
-**Custom Meals**
+### Custom Meals
 
 ```text
 Meal
@@ -103,7 +101,7 @@ Meal
 
 ## 🎯 Project Goal
 
-The main goal is to replace scattered workout notes, meal records, and spreadsheets with **one structured application** for fitness and nutrition organization.
+The main goal of **GlowUp** is to replace scattered workout notes, meal records, and spreadsheets with **one structured application** for fitness and nutrition organization.
 
 The core idea is:
 
@@ -116,17 +114,17 @@ The core idea is:
 * **Flutter**
 * **Dart**
 * **Material UI**
-* **Bloc/Cubit Statemanagment**
+* **BLoC / Cubit State Management**
 * **JSON-based library data**
-* **Local assets**
-* [local SQLite database](https://www.prisma.io/dataguide/sqlite/setting-up-a-local-sqlite-database)
+* **Local Assets**
+* **SQLite** for local data persistence
 
 ---
 
 ## 📂 Main App Structure
 
 ```text
-Fitness & Nutrition Organizer
+GlowUp
 │
 ├── Fitness
 │   ├── Exercise Library
@@ -143,7 +141,7 @@ Fitness & Nutrition Organizer
 
 ## 🎨 UI & Design
 
-The application is designed around a simple and organized mobile experience, with separate sections for fitness and nutrition while maintaining a consistent visual structure throughout the app.
+**GlowUp** is designed around a simple and organized mobile experience, with separate sections for fitness and nutrition while maintaining a consistent visual structure throughout the application.
 
 The goal is to make creating and managing personal workout and nutrition data straightforward without unnecessary complexity.
 
@@ -153,7 +151,7 @@ The goal is to make creating and managing personal workout and nutrition data st
 
 **Development — In Progress 🚧**
 
-The application is currently being developed using Flutter and Dart.
+The application is currently being developed using **Flutter and Dart**.
 
 Current development focuses on:
 
@@ -163,13 +161,14 @@ Current development focuses on:
 * Library data
 * Custom content creation
 * Plan organization
-* Local data structure
+* State management
+* Local data persistence
 
 ---
 
 ## 🔮 Future Development
 
-Future development may focus on improving the application's data management, state management, persistence, and overall user experience while keeping the original purpose of the project centered around organization and planning.
+Future development may focus on improving the application's data management, persistence, state management, and overall user experience while keeping the original purpose of **GlowUp** centered around organization and planning.
 
 ---
 
@@ -183,4 +182,8 @@ Future development may focus on improving the application's data management, sta
 
 **Flutter & Dart**
 
-Created as a mobile application project focused on combining **Fitness + Nutrition + Organization** into one platform.
+**GlowUp** combines:
+
+**Fitness + Nutrition + Organization**
+
+into one mobile application.
